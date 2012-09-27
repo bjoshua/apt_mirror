@@ -16,3 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#
+# Notes: Attribute for mirror directory
+
+package "apt-mirror" do
+  action :upgrade
+end
+
+template "/etc/apt/mirror.list" do
+  path "/etc/apt/mirror.list"
+  source "mirror.list.erb"
+  mode 0644
+  owner "root"
+  group "root"
+  variables({
+  })
+end 
+
