@@ -20,3 +20,12 @@ You will need a databag named aptmirror with each entry in the databag being the
  
 example:
 deb http://archive.ubuntu.com/ubuntu lucid-updates main restricted universe multiverse
+
+
+# Dev Notes
+
+Revisit attributes on resource for web dir
+Write OHAI plugin to determine package arch, initial target debian systems must extend for multi-platform.
+
+Could create a mirror.list.d directory and create a config file for every
+miror and update/destroy specifying the config file. This would overcome update being a global update to all configured repos, but does not follow conventions in default apt-mirror behavior but I think it is worth the extra functionality of the cookbook LWRPs. 
