@@ -20,16 +20,33 @@
 # Notes: Attribute for mirror directory
 
 package "apt-mirror" do
-  action :upgrade
+  action :install
 end
 
-template "/etc/apt/mirror.list" do
-  path "/etc/apt/mirror.list"
-  source "mirror.list.erb"
-  mode 0644
+directory "/etc/apt/mirror.list.d" do
+  mode 0755
   owner "root"
   group "root"
-  variables({
-  })
-end 
+  action :create
+end
 
+
+# Move mirror creation to provider 
+mirrors = data_bag('apt-mirrors')
+
+mirrors.each do | mirror |
+
+  template "/etc/apt/mirror.list.d/#{mirror}.list" do
+    source "mirror.list.erb"
+    mode 0644
+    owner "root"
+    group "root"
+    variables(
+      :type => data_bag_item("#{mirror}", 'type')
+      :url => data_bag_item("#{mirror}", 'url')
+      :distribution => data_bag_item("#{mirror}", 'distribution')
+      :components => data_bag_item("#{mirror}", 'components')
+    )
+  end 
+
+end

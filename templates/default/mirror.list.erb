@@ -19,6 +19,6 @@ set _tilde	 <%= node[:apt-mirror][:_tilde] %>
 ############# end config ##############
 #
 
-<% @aptmirror.each_with_index do |mirror, index| %>
-<%= "server.#{index}=#{mirror}:2888:3888" %>
-<% end %>
+
+<% @type %> <% @url %> <% @distribution %> <% @components.join(' ') %>
+

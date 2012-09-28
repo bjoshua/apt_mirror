@@ -16,10 +16,19 @@ apt-mirror package
 
 Default attributes set to the apt-mirror defaults
 
-You will need a databag named aptmirror with each entry in the databag being the repo you want to mirror 
+You will need a databag named apt-mirrors with each entry in the databag being the repo you want to mirror 
  
 example:
-deb http://archive.ubuntu.com/ubuntu lucid-updates main restricted universe multiverse
+{
+  "id": "mirror_name",
+  "type": "<binary | source>",
+  "url": "http://your.repo.com/",
+  "distribution": "<distribution>",
+  "components": [
+	"component1",
+	"component2"
+   ]
+}
 
 
 # Dev Notes

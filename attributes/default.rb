@@ -1,3 +1,7 @@
+# Cookbook Attributes
+default[:apt-mirror][:config_location]		= "/etc/apt/mirror.list.d"
+
+# apt-mirror config attributes
 default[:apt-mirror][:base_path]		= "/var/spool/apt-mirror"
 default[:apt-mirror][:mirror_path]		= "$base_path/mirror"
 default[:apt-mirror][:skel_path]		= "$base_bath/skel"
