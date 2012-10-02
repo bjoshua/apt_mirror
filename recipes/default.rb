@@ -50,3 +50,16 @@ mirrors.each do | mirror |
   end 
 
 end
+
+# Example to be moved to documentation after testing
+apt-mirror_mirror "opscode_lucid_10" do
+  action :create
+  type "deb"
+  url "http://opscode.com/url"
+  distribution "main"
+  components [ 
+  ]
+  schedule "????"
+end
+
+

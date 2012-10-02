@@ -50,3 +50,5 @@ Write OHAI plugin to determine package arch, initial target debian systems must 
 
 Find a way to move template activation in to create action on mirror resource. This will generate a config file for every mirror and update/destroy specifying the config file. This would allow update action on each configured repo mirror, but does not follow conventions in default apt-mirror behavior but I think it is worth the extra functionality of the cookbook LWRPs. 
 
+
+use chef to extend apt-mirrior to use a multiple config file system like apt, i.e /etc/apt/mirror.list.d/  for each mirror so apt-mirror can update them separately either kicked off from a chef run action :update on the resource, or via cron schedued also through the LWRP. at least thats the idea. 

@@ -1,4 +1,5 @@
 # Cookbook Attributes
+default[:apt-mirror][:databag_name]		= "apt-mirror"
 default[:apt-mirror][:config_location]		= "/etc/apt/mirror.list.d"
 
 # apt-mirror config attributes
