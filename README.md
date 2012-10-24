@@ -21,8 +21,8 @@ All attributes are in the `node[:apt-mirror]` namespace
 
 Default attributes set to the apt-mirror defaults
 
-You will need a databag named apt-mirrors with each entry in the databag being t
-he repo you want to mirror 
+## Suggested Use Pattern
+databag named apt-mirrors with each entry in the databag being the repo you want to mirror 
  
 example data bag entry:
 
@@ -38,6 +38,8 @@ example data bag entry:
    ]
 }
 ```
+
+interate over each entry with a mirror resource create activity.
 
 # Dev Notes
 

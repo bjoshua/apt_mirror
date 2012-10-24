@@ -1,7 +1,10 @@
 actions :create, :update, :destroy
 
-attribute :repo_name, :name_attribute => true
-attribute :repo_url, :kind_of => String
-attribute :repo_section, :kind_of => Array
-attribute :clean_location, :kind_of => String
-attribute :web_directory, :kind_of => String, :default => /var/www/[:repo_name]
+attribute :name, :name_attribute => true
+attribute :type, :kind_of => String
+attribute :url, :kind_of => String
+attribute :distribution, :kind_of => String
+attribute :components, :kind_of => Array
+attribute :clean, :kind_of => String
+attribute :schedule, :kind_of => String
+attribute :docroot, :kind_of => String, :default => /var/www/[:name]

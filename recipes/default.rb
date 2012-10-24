@@ -15,9 +15,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-#
-# Notes: Attribute for mirror directory
 
 package "apt-mirror" do
   action :install
@@ -30,36 +27,14 @@ directory "/etc/apt/mirror.list.d" do
   action :create
 end
 
-
-# Move mirror creation to provider 
-mirrors = data_bag('apt-mirrors')
-
-mirrors.each do | mirror |
-
-  template "/etc/apt/mirror.list.d/#{mirror}.list" do
-    source "mirror.list.erb"
-    mode 0644
-    owner "root"
-    group "root"
-    variables(
-      :type => data_bag_item("#{mirror}", 'type')
-      :url => data_bag_item("#{mirror}", 'url')
-      :distribution => data_bag_item("#{mirror}", 'distribution')
-      :components => data_bag_item("#{mirror}", 'components')
-    )
-  end 
-
-end
-
 # Example to be moved to documentation after testing
 apt-mirror_mirror "opscode_lucid_10" do
   action :create
   type "deb"
-  url "http://opscode.com/url"
-  distribution "main"
-  components [ 
-  ]
+  url "http://apt.opscode.com/"
+  distribution "lucid-0.10"
+  components [ "main" ]
+  clean "http://apt.opscode.com/"
   schedule "????"
+  docroot "/var/www/repos/chef"
 end
-
-
