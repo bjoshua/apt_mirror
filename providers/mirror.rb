@@ -5,7 +5,7 @@ action :create do
  # run apt-mirror to create mirror on system
 
   # separate the url to get the dir name of the created mirror
-  createdMirrorDir = node[:apt-mirror][:url].split("/")[3]
+  createdMirrorDir = node[:apt-mirror][:url].split("/")[2]
   
   execute "#{:name}-setup" do
     command "/usr/bin/apt-mirror -c #{node[:apt-mirror][:config_location]}/#{:name}.list"
