@@ -35,6 +35,6 @@ apt-mirror_mirror "opscode_lucid_10" do
   distribution "lucid-0.10"
   components [ "main" ]
   clean "http://apt.opscode.com/"
-  schedule "????"
+  schedule ({ :minute => "0", :hour => "0", :day => "1", :month => "1", :weekday => "*"}) # once a year on the first of the year at midnight
   docroot "/var/www/repos/chef"
 end

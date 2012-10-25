@@ -1,10 +1,10 @@
-actions :create, :update, :destroy
+actions :create, :update, :delete
 
-attribute :name, :name_attribute => true
+attribute :name, :name_attribute => true, :kind_of => String
 attribute :type, :kind_of => String
 attribute :url, :kind_of => String
 attribute :distribution, :kind_of => String
 attribute :components, :kind_of => Array
 attribute :clean, :kind_of => String
-attribute :schedule, :kind_of => String
+attribute :schedule, :kind_of => Hash
 attribute :docroot, :kind_of => String, :default => /var/www/[:name]
