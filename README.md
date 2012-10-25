@@ -21,7 +21,8 @@ All attributes are in the `node[:apt-mirror]` namespace
 Default attributes set to the apt-mirror defaults from the config file included with the package. 
 
 How to call in a recipe
-'''
+
+```
 apt-mirror_mirror "opscode_lucid_10" do
   action :create
   type "deb"
@@ -33,22 +34,25 @@ apt-mirror_mirror "opscode_lucid_10" do
  => "*"}) # once a year on the first of the year at midnight
   docroot "/var/www/repos/chef"
 end
-'''
+```
 
-action create will
+###action create will
+
 * create the apt-mirror config file based on the included template, using attributes defined.
 * run apt-mirror to install the repo based on the config file named. 
 * symlink to a specified location to make the repo web accessable 
 * schedule updates to the repo via cron. 
 
-action update will
+###action update will
+
 * execue apt-mirror with the specitied mirror names config file
 
-action delete will
+###action delete will
+
 * remove the repo and all sub-dirs
 * remove the symlink into your web accessable directory. 
 * remove the cron entry if a schedule was set
-* remove the config file created 
+* remove the apt-mirror config file created 
 
 
 ## Suggested Use Pattern
@@ -69,9 +73,19 @@ example data bag entry:
 }
 ```
 
-interate over each entry with a mirror resource create activity.
+iterate over each entry with a apt-mirror_mirror create action.
 
 # Dev Notes
+
+## Things Left to do
+skip sections if not specified. 
+
+  * schedule is not a hash check to see if it is set to false
+  * do not symlink if it is not specified
+
+Useful Logging
+
+Other error handling
 
 
 Write OHAI plugin to determine package arch, initial target debian systems must extend for multi-platform.
@@ -79,8 +93,4 @@ Write OHAI plugin to determine package arch, initial target debian systems must 
 	* debian systems  - `dpkg --print-architecture`.chomp
 	* redhat systems - `uname -m`.chomp
 
-skip sections if not specified. 
-  * schedule is not a hash check to see if it is set to false
-  * do not symlink if it is not specified
 
-Other error handling
