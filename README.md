@@ -18,8 +18,38 @@ All attributes are in the `node[:apt-mirror]` namespace
 
 # Usage
 
+Default attributes set to the apt-mirror defaults from the config file included with the package. 
 
-Default attributes set to the apt-mirror defaults
+How to call in a recipe
+'''
+apt-mirror_mirror "opscode_lucid_10" do
+  action :create
+  type "deb"
+  url "http://apt.opscode.com/"
+  distribution "lucid-0.10"
+  components [ "main" ]
+  clean "http://apt.opscode.com/"
+  schedule ({ :minute => "0", :hour => "0", :day => "1", :month => "1", :weekday
+ => "*"}) # once a year on the first of the year at midnight
+  docroot "/var/www/repos/chef"
+end
+'''
+
+action create will
+* create the apt-mirror config file based on the included template, using attributes defined.
+* run apt-mirror to install the repo based on the config file named. 
+* symlink to a specified location to make the repo web accessable 
+* schedule updates to the repo via cron. 
+
+action update will
+* execue apt-mirror with the specitied mirror names config file
+
+action delete will
+* remove the repo and all sub-dirs
+* remove the symlink into your web accessable directory. 
+* remove the cron entry if a schedule was set
+* remove the config file created 
+
 
 ## Suggested Use Pattern
 databag named apt-mirrors with each entry in the databag being the repo you want to mirror 
@@ -43,14 +73,14 @@ interate over each entry with a mirror resource create activity.
 
 # Dev Notes
 
-Revisit attributes on resource for web dir
 
 Write OHAI plugin to determine package arch, initial target debian systems must extend for multi-platform.
 
 	* debian systems  - `dpkg --print-architecture`.chomp
 	* redhat systems - `uname -m`.chomp
 
-Find a way to move template activation in to create action on mirror resource. This will generate a config file for every mirror and update/destroy specifying the config file. This would allow update action on each configured repo mirror, but does not follow conventions in default apt-mirror behavior but I think it is worth the extra functionality of the cookbook LWRPs. 
+skip sections if not specified. 
+  * schedule is not a hash check to see if it is set to false
+  * do not symlink if it is not specified
 
-
-use chef to extend apt-mirrior to use a multiple config file system like apt, i.e /etc/apt/mirror.list.d/  for each mirror so apt-mirror can update them separately either kicked off from a chef run action :update on the resource, or via cron schedued also through the LWRP. at least thats the idea. 
+Other error handling
