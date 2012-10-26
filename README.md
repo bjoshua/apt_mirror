@@ -1,7 +1,7 @@
 # Description
 
 This cookbook will provide LWRPs to create, update and destroy apt repo mirrors
-using the apt-mirror command. It may also provide a function to set up automatic
+using the apt_mirror command. It may also provide a function to set up automatic
  updating of mirrors via cron job. 
 
 # Requirements
@@ -14,16 +14,16 @@ ef 0.8+ is recommended.
 
 # Attributes
 
-All attributes are in the `node[:apt-mirror]` namespace 
+All attributes are in the `node[:apt_mirror]` namespace 
 
 # Usage
 
-Default attributes set to the apt-mirror defaults from the config file included with the package. 
+Default attributes set to the apt_mirror defaults from the config file included with the package. 
 
 How to call in a recipe
 
 ```
-apt-mirror_mirror "opscode_lucid_10" do
+apt_mirror_mirror "opscode_lucid_10" do
   action :create
   type "deb"
   url "http://apt.opscode.com/"
@@ -39,25 +39,25 @@ end
 
 ###action create will
 
-* create the apt-mirror config file based on the included template, using attributes defined.
-* run apt-mirror to install the repo based on the config file named. 
+* create the apt_mirror config file based on the included template, using attributes defined.
+* run apt_mirror to install the repo based on the config file named. 
 * symlink to a specified location to make the repo web accessable 
 * schedule updates to the repo via cron. 
 
 ###action update will
 
-* execue apt-mirror with the specitied mirror names config file
+* execue apt_mirror with the specitied mirror names config file
 
 ###action delete will
 
 * remove the repo and all sub-dirs
 * remove the symlink into your web accessable directory. 
 * remove the cron entry if a schedule was set
-* remove the apt-mirror config file created 
+* remove the apt_mirror config file created 
 
 
 ## Suggested Use Pattern
-databag named apt-mirrors with each entry in the databag being the repo you want to mirror 
+databag named apt_mirrors with each entry in the databag being the repo you want to mirror 
  
 example data bag entry:
 
@@ -74,7 +74,7 @@ example data bag entry:
 }
 ```
 
-iterate over each entry with a apt-mirror_mirror create action.
+iterate over each entry with a apt_mirror_mirror create action.
 
 # Dev Notes
 

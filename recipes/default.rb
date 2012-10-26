@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: apt-mirror
+# Cookbook Name:: apt_mirror
 # Recipe:: default
 #
 # Copyright 2012, Joshua Bell
@@ -28,7 +28,7 @@ directory "/etc/apt/mirror.list.d" do
 end
 
 # Example to be moved to documentation after testing
-apt-mirror_mirror "opscode_lucid_10" do
+apt_mirror_mirror "opscode_lucid_10" do
   action :create
   type "deb"
   url "http://apt.opscode.com/"
