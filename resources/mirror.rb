@@ -5,7 +5,7 @@ attribute :type, :kind_of => String
 attribute :url, :kind_of => String
 attribute :distribution, :kind_of => String
 attribute :components, :kind_of => Array
-attribute :clean, :kind_of => [ TrueCLass, FalseClass ]
-attribute :cron, :kind_of => String
+attribute :clean, :kind_of => String
+attribute :cron, :kind_of => [ TrueClass, FalseClass ]
 attribute :schedule, :kind_of => Hash
 attribute :docroot, :kind_of => String, :default => "/var/www/#{:name}"
