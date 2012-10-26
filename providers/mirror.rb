@@ -15,8 +15,8 @@ action :create do
   createdMirrorDir = node[:apt_mirror][:url].split("/")[2]
  
   # Set up mirror creation, dependant on template to fire it off 
-  execute "#{:name}-setup" do
-    command "/usr/bin/apt_mirror #{node[:apt_mirror][:config_location]}/#{:name}.list"
+  execute "#{:name}_setup" do
+    command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{:name}.list"
     creates "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}" 
     action :nothing
   end
@@ -29,34 +29,37 @@ action :create do
     owner "root"
     group "root"
     variables(
-    :type => data_bag_item("#{mirror}", 'type')
-    :url => data_bag_item("#{mirror}", 'url')
-    :distribution => data_bag_item("#{mirror}", 'distribution')
-    :components => data_bag_item("#{mirror}", 'components')
-    notifies :run, resources(:execute => "#{:name}-setup")
+      :config_type => :type, 
+      :config_url => :url,
+      :config_distribution => :distribution,
+      :config_components => [:components]
     )
+    notifies :run, resources(:execute => "#{:name}_setup")
   end 
 
  # if schedule is true make cron entry
-  if :schedule do
-    cron "#{:name}-cron" do
+ if :schedule 
+
+    cron "#{:name}_cron" do
       minute "#{:schedule[:minute]}"
       hour "#{:schedule[:hour]}" 
       day "#{:schedule[:day]}"
       month "#{:schedule[:month]}"
       weekday "#{:schedule[:weekday]}"
-      command "/usr/bin-apt_mirror #{node[:apt_mirror][:config_location]}/#{:name}.list"
+      command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{:name}.list"
       action :create
     end
+
   end
 
 end
+
 
 # Update repo action
 action :update do
 
   # call apt_mirror with config file arguement to update repo
-  execute "#{:name}-setup" do
+  execute "#{:name}_setup" do
     command "/usr/bin/apt_mirror #{node[:apt_mirror][:config_location]}/#{:name}.list"
     creates "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}" 
     action :run
@@ -80,8 +83,8 @@ action :delete do
   end
 
   # remove cron entry if scheduled (needs work)
-  if :schedue do
-    cron "#{:name}-cron" do
+  if :schedule 
+    cron "#{:name}_cron" do
       action :delete
       only_if "#{node[:apt_mirror][:config_location]}/#{:name}.list"
     end
