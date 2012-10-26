@@ -37,18 +37,17 @@ action :create do
     )
   end 
 
- # schedule update via cron if specified
- # if databag schdule or schedule called in resource create cron
- # .split("/")[2]
-
-  cron "#{:name}-cron" do
-    minute "#{:schedule[:minute]}"
-    hour "#{:schedule[:hour]}" 
-    day "#{:schedule[:day]}"
-    month "#{:schedule[:month]}"
-    weekday "#{:schedule[:weekday]}"
-    command "/usr/bin-apt-mirror #{node[:apt-mirror][:config_location]}/#{:name}.list"
-    action :create
+ # if schedule is true make cron entry
+  if :schedule do
+    cron "#{:name}-cron" do
+      minute "#{:schedule[:minute]}"
+      hour "#{:schedule[:hour]}" 
+      day "#{:schedule[:day]}"
+      month "#{:schedule[:month]}"
+      weekday "#{:schedule[:weekday]}"
+      command "/usr/bin-apt-mirror #{node[:apt-mirror][:config_location]}/#{:name}.list"
+      action :create
+    end
   end
 
 end
@@ -81,9 +80,11 @@ action :delete do
   end
 
   # remove cron entry if scheduled (needs work)
-  cron "#{:name}-cron" do
-    action :delete
-    only_if "#{node[:apt-mirror][:config_location]}/#{:name}.list"
+  if :schedue do
+    cron "#{:name}-cron" do
+      action :delete
+      only_if "#{node[:apt-mirror][:config_location]}/#{:name}.list"
+    end
   end
 
   # Remove apt-mirror config file for specified mirror
