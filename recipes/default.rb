@@ -20,8 +20,15 @@ package "apt-mirror" do
   action :install
 end
 
-directory "/etc/apt/mirror.list.d" do
-  mode 0755
+directory "#{node[:apt_mirror][:config_location]}" do
+  mode 00755
+  owner "root"
+  group "root"
+  action :create
+end
+
+directory "#{node[:apt_mirror][:repo_docroot]}" do
+  mode 00755
   owner "root"
   group "root"
   action :create
@@ -37,5 +44,5 @@ apt_mirror_mirror "opscode_lucid_10" do
   clean "http://apt.opscode.com/"
   cron true
   schedule ({ :minute => "0", :hour => "0", :day => "1", :month => "1", :weekday => "*"}) # once a year on the first of the year at midnight
-  docroot "/var/www/repos/chef"
+  docroot "/var/www/repos"
 end

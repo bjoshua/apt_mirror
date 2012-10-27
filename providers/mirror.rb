@@ -36,7 +36,7 @@ action :create do
   # create link to web acessable directory if configured
   if new_resource.docroot
     link "#{new_resource.docroot}/#{new_resource.name}" do
-      to "#{node[:apt_mirror][:base_path]}/#{createdMirrorDir}"
+      to "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}"
     end
   end 
 
@@ -74,16 +74,16 @@ end
 # Destroy Repo Action
 action :delete do
 
+  # Remove web accessable symlink
+  link "#{new_resource.docroot}/#{new_resource.name}" do
+    action :delete
+    only_if "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}"
+  end
+
   # Remove mirrored repo, files and directory structure
   directory "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}" do
     recursive true
     action :delete
-  end
-
-  # Remove web accessable symlink
-  link ":docroot" do
-    action :delete
-    only_if ":docroot"
   end
 
   # remove cron entry if scheduled (needs work)
