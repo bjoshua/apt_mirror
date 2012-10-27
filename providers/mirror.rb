@@ -2,13 +2,6 @@
 
 action :create do
 
-  # create link to web acessable directory if configured
-  if new_resource.docroot
-    link "#{new_resource.docroot}" do
-      to "#{new_resource.url}"
-    end
-  end 
-
   # run apt_mirror to create mirror on system
 
   # separate the url to get the dir name of the created mirror
@@ -39,6 +32,14 @@ action :create do
     )
     notifies :run, resources(:execute => "#{new_resource.name}_setup")
   end 
+
+  # create link to web acessable directory if configured
+  if new_resource.docroot
+    link "#{new_resource.docroot}/#{new_resource.name}" do
+      to "#{node[:apt_mirror][:base_path]}/#{createdMirrorDir}"
+    end
+  end 
+
 
  # if schedule is true make cron entry
  if new_resource.schedule 
