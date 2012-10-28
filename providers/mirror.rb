@@ -1,19 +1,17 @@
+ 
 #Create Action
 
 action :create do
 
-  # run apt_mirror to create mirror on system
-
   # separate the url to get the dir name of the created mirror
   createdMirrorDir = new_resource.url.split("/")[2]
-  puts "CHECK CLASS"
-  puts createdMirrorDir.class 
-  puts createdMirrorDir
- 
+
+  # run apt_mirror to create mirror on system
+
   # Set up mirror creation, dependant on template to fire it off 
   execute "#{new_resource.name}_setup" do
     command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
-    creates "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir.split("/")[2]}" 
+    creates "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}" 
     action :nothing
   end
  
@@ -62,6 +60,9 @@ end
 # Update repo action
 action :update do
 
+  # separate the url to get the dir name of the created mirror
+  createdMirrorDir = new_resource.url.split("/")[2]
+
   # call apt_mirror with config file arguement to update repo
   execute "#{new_resource.name}_setup" do
     command "/usr/bin/apt_mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
@@ -74,8 +75,12 @@ end
 # Destroy Repo Action
 action :delete do
 
+  # separate the url to get the dir name of the created mirror
+  createdMirrorDir = new_resource.url.split("/")[2]
+
   # Remove web accessable symlink
   link "#{new_resource.docroot}/#{new_resource.name}" do
+    to "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}"
     action :delete
     only_if "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}"
   end
@@ -86,16 +91,22 @@ action :delete do
     action :delete
   end
 
+  directory "#{node[:apt_mirror][:skel_path]}/#{createdMirrorDir}" do
+    recursive true
+    action :delete
+  end
+
+  # remove cron entry if scheduled (needs work)
   # remove cron entry if scheduled (needs work)
   if :schedule 
-    cron "#{:name}_cron" do
+    cron "#{new_resource.name}_cron" do
       action :delete
-      only_if "#{node[:apt_mirror][:config_location]}/#{:name}.list"
+      only_if "#{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
     end
   end
 
   # Remove apt_mirror config file for specified mirror
-  file "#{node[:apt_mirror][:config_location]}/#{:name}.list" do
+  file "#{node[:apt_mirror][:config_location]}/#{new_resource.name}.list" do
     action :delete
   end
 

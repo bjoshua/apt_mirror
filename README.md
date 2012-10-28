@@ -18,6 +18,8 @@ All attributes are in the `node[:apt_mirror]` namespace
 
 # Usage
 
+WARNING: Mirroring Large Repos will of course make your chef run as long as it takes to download the repo. 
+
 Default attributes set to the apt_mirror defaults from the config file included with the package. 
 
 How to call in a recipe
