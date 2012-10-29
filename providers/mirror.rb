@@ -49,7 +49,9 @@ action :create do
       month "#{new_resource.schedule[:month]}"
       weekday "#{new_resource.schedule[:weekday]}"
       command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
+      user "apt-mirror"
       action :create
+      only_if "id apt-mirror"
     end
 
   end

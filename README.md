@@ -41,21 +41,21 @@ end
 
 ###action create will
 
-* create the apt_mirror config file based on the included template, using attributes defined.
-* run apt_mirror to install the repo based on the config file named. 
+* create the apt-mirror config file based on the included template, using attributes defined.
+* run apt-mirror as the user apt-mirror to install the repo based on the config file named. 
 * symlink to a specified location to make the repo web accessable 
-* schedule updates to the repo via cron. 
+* schedule updates to the repo via the apt-mirror users crontab. 
 
 ###action update will
 
-* execue apt_mirror with the specitied mirror names config file
+* execue apt-mirror as teh apt-mirror user with the specified mirror config file
 
 ###action delete will
 
 * remove the repo and all sub-dirs
 * remove the symlink into your web accessable directory. 
 * remove the cron entry if a schedule was set
-* remove the apt_mirror config file created 
+* remove the apt-mirror config file for the mirror specified 
 
 
 ## Suggested Use Pattern
