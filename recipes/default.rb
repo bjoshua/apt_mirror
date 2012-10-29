@@ -21,14 +21,14 @@ package "apt-mirror" do
 end
 
 directory "#{node[:apt_mirror][:config_location]}" do
-  mode 00755
+  mode "0755"
   owner "root"
   group "root"
   action :create
 end
 
 directory "#{node[:apt_mirror][:repo_docroot]}" do
-  mode 00755
+  mode "0755"
   owner "root"
   group "root"
   action :create

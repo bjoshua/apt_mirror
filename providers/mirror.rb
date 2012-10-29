@@ -19,7 +19,7 @@ action :create do
   # notifies the execute above to create the mirror
   template "#{node[:apt_mirror][:config_location]}/#{new_resource.name}.list" do
     source "mirror.list.erb"
-    mode 0644
+    mode "0644"
     owner "root"
     group "root"
     variables(
@@ -65,8 +65,7 @@ action :update do
 
   # call apt_mirror with config file arguement to update repo
   execute "#{new_resource.name}_setup" do
-    command "/usr/bin/apt_mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
-    creates "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}" 
+    command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
     action :run
   end
 
@@ -80,9 +79,8 @@ action :delete do
 
   # Remove web accessable symlink
   link "#{new_resource.docroot}/#{new_resource.name}" do
-    to "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}"
     action :delete
-    only_if "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}"
+    only_if do ::File.symlink?("#{new_resource.docroot}/#{new_resource.name}") end
   end
 
   # Remove mirrored repo, files and directory structure
@@ -101,7 +99,7 @@ action :delete do
   if :schedule 
     cron "#{new_resource.name}_cron" do
       action :delete
-      only_if "#{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
+      only_if do ::File.exists?("#{node[:apt_mirror][:config_location]}/#{new_resource.name}.list") end
     end
   end
 
