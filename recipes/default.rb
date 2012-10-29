@@ -36,7 +36,7 @@ end
 
 # Example to be moved to documentation after testing
 apt_mirror_mirror "opscode_lucid_10" do
-  action :delete
+  action :create
   type "deb"
   url "http://apt.opscode.com/"
   distribution "lucid-0.10"

@@ -10,7 +10,7 @@ action :create do
 
   # Set up mirror creation, dependant on template to fire it off 
   execute "#{new_resource.name}_setup" do
-    command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
+    command "su - apt-mirror -c \"/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list\""
     creates "#{node[:apt_mirror][:mirror_path]}/#{createdMirrorDir}" 
     action :nothing
   end
@@ -65,7 +65,7 @@ action :update do
 
   # call apt_mirror with config file arguement to update repo
   execute "#{new_resource.name}_setup" do
-    command "/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list"
+    command "su - apt-mirror -c \"/usr/bin/apt-mirror #{node[:apt_mirror][:config_location]}/#{new_resource.name}.list\""
     action :run
   end
 
